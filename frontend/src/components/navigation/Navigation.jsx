@@ -1,6 +1,7 @@
+"use client";
 import { Button } from "@/components/common/button";
-
-const Navigation = () => {
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+const Navigation = ({ setLoggingState }) => {
   return (
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-purple-100 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,9 +27,19 @@ const Navigation = () => {
             >
               Features
             </a>
-            <Button className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700">
-              Get Started Free
-            </Button>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+              <Button
+                onClick={() => {
+                  setLoggingState(true);
+                }}
+                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
+              >
+                Get Started Free
+              </Button>
+            </SignedOut>
           </div>
         </div>
       </div>
