@@ -1,10 +1,10 @@
 import { FileText, Upload } from "lucide-react";
 import { Button } from "../common/button";
+import Link from "next/link";
 
 const Hero = () => {
   return (
     <div>
-      {" "}
       <section className="pt-24 pb-16 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center">
@@ -19,13 +19,16 @@ const Hero = () => {
               what you study.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-3"
-              >
-                <Upload className="mr-2 h-5 w-5" />
-                Upload Notes
-              </Button>
+              <Link href="/study">
+                <Button
+                  size="lg"
+                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-3"
+                >
+                  <Upload className="mr-2 h-5 w-5" />
+                  Upload Notes
+                </Button>
+              </Link>
+
               <Button
                 size="lg"
                 variant="outline"
