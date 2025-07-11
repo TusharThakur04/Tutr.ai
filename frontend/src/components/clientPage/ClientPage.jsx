@@ -3,7 +3,7 @@ import { useState } from "react";
 import Logging from "../logging/Logging";
 import Navigation from "../navigation/Navigation";
 import { useUser } from "@clerk/nextjs";
-import storeUser from "../../../lib/clerk/storeUser";
+import storeUser from "@/lib/clerk/storeUser";
 
 export default function ClientPage() {
   const [loggingState, setLoggingState] = useState(false);
