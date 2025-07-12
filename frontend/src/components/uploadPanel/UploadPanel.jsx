@@ -3,8 +3,13 @@ import { useState } from "react";
 import { Button } from "@/components/common/button";
 import { Card } from "@/components/common/card";
 import { Plus, FileText, Upload, Trash2 } from "lucide-react";
+import axios from "axios";
+import { useUser } from "@clerk/nextjs";
 
 export const UploadPanel = () => {
+  const user = useUser();
+  const userId = user.user.id;
+  // console.log("id", user.user.id);
   const [documents, setDocuments] = useState([
     {
       id: "1",
@@ -34,7 +39,7 @@ export const UploadPanel = () => {
     }
   };
 
-  const handleDrop = (e) => {
+  const handleDrop = async (e) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
@@ -43,6 +48,28 @@ export const UploadPanel = () => {
     // Backend integration needed: Upload files to server
     const files = Array.from(e.dataTransfer.files);
     console.log("Files dropped:", files);
+    const document = {
+      fileName: files[0].name,
+      type: files[0].type,
+      userId,
+    };
+    console.log("document", document);
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+        document
+      );
+      const { uploadURL, key } = res.data;
+      console.log(uploadURL);
+
+      await axios.put(uploadURL, files[0], {
+        headers: {
+          "Content-Type": files[0].type,
+        },
+      });
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // Inside your component
@@ -51,19 +78,38 @@ export const UploadPanel = () => {
     // Create a hidden file input element
     const input = document.createElement("input");
     input.type = "file";
-    input.multiple = true; // Allow multiple file selection
-    input.accept = ".pdf,.doc,.docx,.txt"; // Accept specific file types
+    input.multiple = true;
+    input.accept = ".pdf,.doc,.docx,.txt";
 
-    input.onchange = (e) => {
+    input.onchange = async (e) => {
       const files = Array.from(e.target.files || []);
       console.log("Files selected:", files);
 
-      // You can now:
-      // 1. Update component state with these files
-      // 2. Send them to backend API using FormData + fetch/axios
+      const document = {
+        fileName: files[0].name,
+        type: files[0].type,
+        userId,
+      };
+      console.log("document", document);
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/upload`,
+          document
+        );
+        const { uploadURL, key } = res.data;
+        console.log(uploadURL);
+
+        await axios.put(uploadURL, files[0], {
+          headers: {
+            "Content-Type": files[0].type,
+          },
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
 
-    input.click(); // Trigger the file picker dialog
+    input.click();
   };
 
   const handleDeleteDocument = (docId) => {
