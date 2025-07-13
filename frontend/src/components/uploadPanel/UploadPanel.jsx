@@ -7,9 +7,13 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { v4 as uuidv4 } from "uuid";
 
-export const UploadPanel = () => {
+export const UploadPanel = ({ setSelectedDoc }) => {
   const { isSignedIn, user } = useUser();
   const userId = user.id;
+
+  const handleClick = (doc) => {
+    setSelectedDoc(doc);
+  };
 
   console.log("id", userId);
   const [documents, setDocuments] = useState([
@@ -167,6 +171,7 @@ export const UploadPanel = () => {
         <div className="space-y-2">
           {documents.map((doc) => (
             <Card
+              onClick={() => handleClick(doc)}
               key={doc.id}
               className="p-3 hover:shadow-md transition-shadow"
             >
