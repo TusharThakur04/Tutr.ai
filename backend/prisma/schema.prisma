@@ -22,4 +22,16 @@ model User {
   username  String?
   image     String?
   createdAt DateTime   @default(now())
+  documents Documents[]  
+}
+
+model Documents{
+  id         String   @id @default(uuid())
+  name       String
+  key        String   @unique
+  type       String
+  userId     String
+  uploadDate DateTime @default(now())
+  status     String   @default("ready")
+  user User @relation(fields:[userId], references:[id])
 }
