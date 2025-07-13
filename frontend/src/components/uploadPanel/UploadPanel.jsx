@@ -1,15 +1,17 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/common/button";
 import { Card } from "@/components/common/card";
 import { Plus, FileText, Upload, Trash2 } from "lucide-react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
+import { v4 as uuidv4 } from "uuid";
 
 export const UploadPanel = () => {
-  const user = useUser();
-  const userId = user.user.id;
-  // console.log("id", user.user.id);
+  const { isSignedIn, user } = useUser();
+  const userId = user.id;
+
+  console.log("id", userId);
   const [documents, setDocuments] = useState([
     {
       id: "1",
@@ -26,6 +28,45 @@ export const UploadPanel = () => {
       uploadDate: new Date(),
     },
   ]);
+
+  const upload = async (files) => {
+    const document = {
+      fileName: files[0].name,
+      type: files[0].type,
+      userId,
+    };
+    console.log("document:", document);
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload`, // api call to get s3  url
+        document
+      );
+      const { uploadURL, key } = res.data;
+      console.log(uploadURL);
+
+      //uploading document to s3 bucket
+
+      await axios.put(uploadURL, files[0], {
+        headers: {
+          "Content-Type": files[0].type,
+        },
+      });
+
+      const newDoc = {
+        id: uuidv4(),
+        name: files[0].name,
+        type: files[0].type,
+        status: "ready",
+        uploadDate: new Date(),
+        key,
+      };
+
+      setDocuments((prev) => [...prev, newDoc]); //rendering doc on ui
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const [dragActive, setDragActive] = useState(false);
 
@@ -44,38 +85,14 @@ export const UploadPanel = () => {
     e.stopPropagation();
     setDragActive(false);
 
-    // Frontend logic: Handle file drop
-    // Backend integration needed: Upload files to server
     const files = Array.from(e.dataTransfer.files);
     console.log("Files dropped:", files);
-    const document = {
-      fileName: files[0].name,
-      type: files[0].type,
-      userId,
-    };
-    console.log("document", document);
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/upload`,
-        document
-      );
-      const { uploadURL, key } = res.data;
-      console.log(uploadURL);
 
-      await axios.put(uploadURL, files[0], {
-        headers: {
-          "Content-Type": files[0].type,
-        },
-      });
-    } catch (err) {
-      console.log(err);
-    }
+    console.log("document", document);
+    await upload(files);
   };
 
-  // Inside your component
-
   const handleFileUpload = () => {
-    // Create a hidden file input element
     const input = document.createElement("input");
     input.type = "file";
     input.multiple = true;
@@ -85,28 +102,7 @@ export const UploadPanel = () => {
       const files = Array.from(e.target.files || []);
       console.log("Files selected:", files);
 
-      const document = {
-        fileName: files[0].name,
-        type: files[0].type,
-        userId,
-      };
-      console.log("document", document);
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL}/upload`,
-          document
-        );
-        const { uploadURL, key } = res.data;
-        console.log(uploadURL);
-
-        await axios.put(uploadURL, files[0], {
-          headers: {
-            "Content-Type": files[0].type,
-          },
-        });
-      } catch (err) {
-        console.log(err);
-      }
+      await upload(files);
     };
 
     input.click();
@@ -115,8 +111,6 @@ export const UploadPanel = () => {
   const handleDeleteDocument = (docId) => {
     // Remove a document from the local state by ID
     setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== docId));
-
-    // TODO: Also send a request to your backend to delete the file from DB/storage
   };
 
   return (
@@ -181,7 +175,7 @@ export const UploadPanel = () => {
                   <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
                     <FileText className="w-4 h-4 text-purple-600" />
                   </div>
-                  <div className="flex-1 min-w-0">
+                  <div className="flex-1 min-w-0 overflow-hidden">
                     <p className="text-sm font-medium text-gray-800 truncate">
                       {doc.name}
                     </p>
