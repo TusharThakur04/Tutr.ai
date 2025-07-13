@@ -10,12 +10,6 @@ import { v4 as uuidv4 } from "uuid";
 export const UploadPanel = ({ setSelectedDoc }) => {
   const { isSignedIn, user } = useUser();
   const userId = user.id;
-
-  const handleClick = (doc) => {
-    setSelectedDoc(doc);
-  };
-
-  console.log("id", userId);
   const [documents, setDocuments] = useState([
     {
       id: "1",
@@ -23,6 +17,7 @@ export const UploadPanel = ({ setSelectedDoc }) => {
       type: "pdf",
       status: "ready",
       uploadDate: new Date(),
+      key: "abc",
     },
     {
       id: "2",
@@ -30,8 +25,30 @@ export const UploadPanel = ({ setSelectedDoc }) => {
       type: "pdf",
       status: "ready",
       uploadDate: new Date(),
+      key: "xyz",
     },
   ]);
+
+  //rendering document on screen
+  const handleClick = async (doc) => {
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}/getDoc`, //fetching pre signed url of the doc
+        { key: doc.key }
+      );
+
+      const { signedUrl } = res.data;
+
+      setSelectedDoc({
+        name: doc.name,
+        url: signedUrl,
+      });
+    } catch (err) {
+      console.error("Failed to fetch viewer URL", err);
+    }
+  };
+
+  console.log("id", userId);
 
   const upload = async (files) => {
     const document = {

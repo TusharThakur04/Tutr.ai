@@ -22,7 +22,7 @@ const uploadDocument = async (req, res) => {
     Tagging: "Project=Tutr.ai&Category=Document",
   });
   const uploadURL = await getSignedUrl(s3Client, command, { expiresIn: 60 });
-  console.log(uploadURL);
+  console.log("fetched url for uploading");
   res.json({ uploadURL, key });
 };
 

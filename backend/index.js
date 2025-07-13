@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import cors from "cors";
 import login from "./routes/login.js";
 import upload from "./routes/upload.js";
+import getDoc from "./routes/getDoc.js";
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -18,6 +19,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/login", login);
 app.use("/upload", upload);
+app.use("/getDoc", getDoc);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
