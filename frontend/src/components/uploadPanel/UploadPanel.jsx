@@ -176,7 +176,7 @@ export const UploadPanel = () => {
                     <FileText className="w-4 h-4 text-purple-600" />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <p className="text-sm font-medium text-gray-800 truncate">
+                    <p className="text-sm font-medium text-gray-800 w-40 truncate">
                       {doc.name}
                     </p>
                     <div className="flex items-center space-x-2 mt-1">
