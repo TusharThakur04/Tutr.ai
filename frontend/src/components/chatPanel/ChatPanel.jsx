@@ -64,9 +64,9 @@ export const ChatPanel = () => {
               }`}
             >
               <p className="text-sm">{msg.content}</p>
-              <span className="text-xs opacity-70 mt-1 block">
+              {/* <span className="text-xs opacity-70 mt-1 block">
                 {msg.timestamp.toLocaleTimeString()}
-              </span>
+              </span> */}
             </div>
           </div>
         ))}

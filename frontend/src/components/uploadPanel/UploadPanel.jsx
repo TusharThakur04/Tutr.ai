@@ -7,24 +7,7 @@ import axios from "axios";
 import { v4 as uuidv4 } from "uuid";
 
 export const UploadPanel = ({ setSelectedDoc, userId }) => {
-  const [documents, setDocuments] = useState([
-    {
-      id: "1",
-      name: "Biology Notes.pdf",
-      type: "pdf",
-      status: "ready",
-      uploadDate: new Date(),
-      key: "abc",
-    },
-    {
-      id: "2",
-      name: "Chemistry Chapter 3.pdf",
-      type: "pdf",
-      status: "ready",
-      uploadDate: new Date(),
-      key: "xyz",
-    },
-  ]);
+  const [documents, setDocuments] = useState([]);
 
   //rendering document on screen
   const handleClick = async (doc) => {
@@ -51,7 +34,7 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
       type: files[0].type,
       userId,
     };
-    console.log("document:", document);
+    // console.log("document:", document);
 
     try {
       const res = await axios.post(
@@ -59,7 +42,7 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
         document
       );
       const { uploadURL, key } = res.data;
-      console.log(uploadURL);
+      // console.log(uploadURL);
 
       //uploading document to s3 bucket
 
@@ -69,16 +52,23 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
         },
       });
 
-      const newDoc = {
-        id: uuidv4(),
-        name: files[0].name,
-        type: files[0].type,
-        status: "ready",
-        uploadDate: new Date(),
-        key,
-      };
-
-      setDocuments((prev) => [...prev, newDoc]); //rendering doc on ui
+      try {
+        const newDoc = {
+          userId,
+          name: files[0].name,
+          type: files[0].type,
+          status: "ready",
+          key,
+        };
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API_URL}/metadata`,
+          newDoc
+        );
+        setDocuments((prev) => [...prev, newDoc]);
+      } catch (err) {
+        console.log("metadata couldn't be uploaded", err);
+      }
+      //rendering doc on ui
     } catch (err) {
       console.log(err);
     }
@@ -104,7 +94,6 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
     const files = Array.from(e.dataTransfer.files);
     console.log("Files dropped:", files);
 
-    console.log("document", document);
     await upload(files);
   };
 
