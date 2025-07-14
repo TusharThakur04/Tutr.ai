@@ -4,7 +4,6 @@ import { Button } from "@/components/common/button";
 import { Card } from "@/components/common/card";
 import { Plus, FileText, Upload, Trash2 } from "lucide-react";
 import axios from "axios";
-import { useUser } from "@clerk/nextjs";
 import { v4 as uuidv4 } from "uuid";
 
 export const UploadPanel = ({ setSelectedDoc, userId }) => {
@@ -186,7 +185,7 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
             <Card
               onClick={() => handleClick(doc)}
               key={doc.id}
-              className="p-3 hover:shadow-md transition-shadow"
+              className="p-3 hover:shadow-md hover:scale-95 transition-all duration-250 ease-in-out cursor-pointer"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3 flex-1">
