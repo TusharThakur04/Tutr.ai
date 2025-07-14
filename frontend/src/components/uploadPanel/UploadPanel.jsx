@@ -57,7 +57,7 @@ export const UploadPanel = ({
       });
 
       try {
-        const newDoc = {
+        let newDoc = {
           userId,
           name: files[0].name,
           type: files[0].type,
@@ -68,6 +68,7 @@ export const UploadPanel = ({
           `${process.env.NEXT_PUBLIC_API_URL}/metadata`,
           newDoc
         );
+        newDoc = res.data;
         setDocuments((prev) => [...prev, newDoc]);
       } catch (err) {
         console.log("metadata couldn't be uploaded", err);
@@ -117,8 +118,11 @@ export const UploadPanel = ({
     input.click();
   };
 
-  const handleDeleteDocument = (docId) => {
-    // Remove a document from the local state by ID
+  const handleDeleteDocument = async (docId) => {
+    await axios.delete(
+      `${process.env.NEXT_PUBLIC_API_URL}/metadata/?docId=${docId}`
+    );
+
     setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== docId));
   };
 
@@ -176,7 +180,6 @@ export const UploadPanel = ({
         <div className="space-y-2">
           {documents.map((doc) => (
             <Card
-              onClick={() => handleClick(doc)}
               key={doc.id}
               className="p-3 hover:shadow-md hover:scale-95 transition-all duration-250 ease-in-out cursor-pointer"
             >
@@ -186,7 +189,10 @@ export const UploadPanel = ({
                     <FileText className="w-4 h-4 text-purple-600" />
                   </div>
                   <div className="flex-1 min-w-0 overflow-hidden">
-                    <p className="text-sm font-medium text-gray-800 w-40 truncate">
+                    <p
+                      onClick={() => handleClick(doc)}
+                      className="text-sm font-medium text-gray-800 w-40 truncate hover:underline"
+                    >
                       {doc.name}
                     </p>
                     <div className="flex items-center space-x-2 mt-1">

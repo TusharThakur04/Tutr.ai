@@ -35,7 +35,7 @@ const page = () => {
     };
 
     fetchData();
-  }, [isLoaded, user]);
+  }, [isLoaded, user, selectedDoc]);
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
