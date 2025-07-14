@@ -7,9 +7,7 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { v4 as uuidv4 } from "uuid";
 
-export const UploadPanel = ({ setSelectedDoc }) => {
-  const { isSignedIn, user } = useUser();
-  const userId = user.id;
+export const UploadPanel = ({ setSelectedDoc, userId }) => {
   const [documents, setDocuments] = useState([
     {
       id: "1",
@@ -47,8 +45,6 @@ export const UploadPanel = ({ setSelectedDoc }) => {
       console.error("Failed to fetch viewer URL", err);
     }
   };
-
-  console.log("id", userId);
 
   const upload = async (files) => {
     const document = {

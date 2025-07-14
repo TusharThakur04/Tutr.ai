@@ -3,16 +3,25 @@ import { ChatPanel } from "@/components/chatPanel/ChatPanel";
 import Navigation from "@/components/navigation/Navigation";
 import { UploadPanel } from "@/components/uploadPanel/UploadPanel";
 import Viewer from "@/components/viewer/Viewer";
+import { useUser } from "@clerk/nextjs";
+import { useSignIn } from "@clerk/nextjs";
 import { useState } from "react";
 
 const page = () => {
   const [selectedDoc, setSelectedDoc] = useState(null);
+  const { user } = useUser();
+  const { isLoaded } = useSignIn();
+  let userId = null;
+  if (isLoaded) {
+    userId = user.id;
+  }
+
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
       <Navigation />
       <div className=" pt-16 flex h-screen">
         <ChatPanel />
-        <UploadPanel setSelectedDoc={setSelectedDoc} />
+        <UploadPanel setSelectedDoc={setSelectedDoc} userId={userId} />
         <Viewer selectedDoc={selectedDoc} setSelectedDoc={setSelectedDoc} />
       </div>
     </div>
