@@ -4,11 +4,13 @@ import { Button } from "@/components/common/button";
 import { Card } from "@/components/common/card";
 import { Plus, FileText, Upload, Trash2 } from "lucide-react";
 import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
-export const UploadPanel = ({ setSelectedDoc, userId }) => {
-  const [documents, setDocuments] = useState([]);
-
+export const UploadPanel = ({
+  setSelectedDoc,
+  userId,
+  documents,
+  setDocuments,
+}) => {
   //rendering document on screen
   const handleClick = async (doc) => {
     try {
@@ -27,6 +29,8 @@ export const UploadPanel = ({ setSelectedDoc, userId }) => {
       console.error("Failed to fetch viewer URL", err);
     }
   };
+
+  // console.log(documents);
 
   const upload = async (files) => {
     const document = {
