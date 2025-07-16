@@ -126,12 +126,16 @@ export const UploadPanel = ({
     setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== docId));
   };
 
-  const handleSendTOAi = (doc) => {
-    console.log(doc);
+  const handleSendTOAi = async (doc) => {
+    // console.log( doc);
     setDocuments((prevDocs) =>
       prevDocs.map((prevDoc) =>
         doc.id === prevDoc.id ? { ...prevDoc, status: "processing" } : prevDoc
       )
+    );
+    const res = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/prepare`,
+      doc
     );
   };
   return (
