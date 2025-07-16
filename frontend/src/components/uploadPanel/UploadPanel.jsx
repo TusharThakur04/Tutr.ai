@@ -61,7 +61,7 @@ export const UploadPanel = ({
           userId,
           name: files[0].name,
           type: files[0].type,
-          status: "ready",
+          status: "unready",
           key,
         };
         const res = await axios.post(
@@ -126,6 +126,14 @@ export const UploadPanel = ({
     setDocuments((prevDocs) => prevDocs.filter((doc) => doc.id !== docId));
   };
 
+  const handleSendTOAi = (doc) => {
+    console.log(doc);
+    setDocuments((prevDocs) =>
+      prevDocs.map((prevDoc) =>
+        doc.id === prevDoc.id ? { ...prevDoc, status: "processing" } : prevDoc
+      )
+    );
+  };
   return (
     <div className="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">
       {/* Upload Section */}
@@ -181,7 +189,7 @@ export const UploadPanel = ({
           {documents.map((doc) => (
             <Card
               key={doc.id}
-              className="p-3 hover:shadow-md hover:scale-95 transition-all duration-250 ease-in-out cursor-pointer"
+              className="p-3 hover:shadow-md hover:scale-95 hover:bg-gray-100 transition-all duration-250 ease-in-out"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-start space-x-3 flex-1">
@@ -191,24 +199,27 @@ export const UploadPanel = ({
                   <div className="flex-1 min-w-0 overflow-hidden">
                     <p
                       onClick={() => handleClick(doc)}
-                      className="text-sm font-medium text-gray-800 w-40 truncate hover:underline"
+                      className="text-sm font-medium text-gray-800 w-30 truncate hover:underline cursor-pointer"
                     >
                       {doc.name}
                     </p>
                     <div className="flex items-center space-x-2 mt-1">
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          doc.status === "ready"
-                            ? "bg-green-100 text-green-700"
-                            : doc.status === "processing"
-                              ? "bg-yellow-100 text-yellow-700"
+                      <button
+                        onClick={() => handleSendTOAi(doc)}
+                        className={`text-xs px-2 py-1 rounded-full hover:scale-95 hover:bg-red-200 cursor-pointer duration-200 ${
+                          doc.status === "unready"
+                            ? "bg-red-100 text-red-700"
+                            : doc.status === "ready"
+                              ? "bg-green-100 text-green-700"
                               : "bg-gray-100 text-gray-700"
                         }`}
                       >
-                        {doc.status === "ready"
-                          ? "Ready for questions"
-                          : doc.status}
-                      </span>
+                        {doc.status === "unready"
+                          ? "Make available to ai"
+                          : doc.status === "ready"
+                            ? "Ready"
+                            : "Processing..."}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -216,7 +227,7 @@ export const UploadPanel = ({
                   onClick={() => handleDeleteDocument(doc.id)}
                   variant="ghost"
                   size="sm"
-                  className="text-gray-400 hover:text-red-600 p-1"
+                  className="text-gray-400 hover:text-red-600 p-1 cursor-pointer"
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
