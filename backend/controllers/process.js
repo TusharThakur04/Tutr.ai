@@ -17,20 +17,18 @@ const process = async (req, res) => {
 
   const chunks = await splitting(cleanText); // chunking of cleanText
 
-  // const embeddingsData = [];
-  // for (const chunk of chunks) {
-  //   const embedding = await embeddingChunks(chunk);
-  //   embeddingsData.push(embedding);
-  // }
+  const embeddingsData = [];
+  for (const chunk of chunks) {
+    const embedding = await embeddingChunks(chunk);
+    embeddingsData.push(embedding);
+  }
 
-  // console.log(
-  //   "embedding -----",
-  //   embeddingsData.length,
-  //   "\n",
-  //   embeddingsData[0]
-  // );
-
-  // await embeddingChunks(chunks[0]);
+  console.log(
+    "embedding -----",
+    embeddingsData.length,
+    "\n",
+    embeddingsData[0]
+  );
 
   res.json("");
 };
