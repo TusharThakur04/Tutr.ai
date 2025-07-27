@@ -5,8 +5,10 @@ const textCleaning = (rawText) => {
     .replace(/\r?\n|\r/g, " ")
     // Remove multiple spaces
     .replace(/\u00a0/g, " ")
+
     // Remove page numbers
-    .replace(/Page\s?\d+/gi, "")
+    // .replace(/Page\s?\d+/gi, "")
+
     // Remove figure references
     .replace(/FIGURE\s?P?\d+[A-Z]?\s*/gi, "")
     // Remove headers like cen58933_ch15.qxd...

@@ -8,7 +8,7 @@ const embeddingChunks = async (chunk) => {
     inputs: chunk,
   });
 
-  console.log(embeddingData);
+  // console.log(embeddingData);
 
   return embeddingData;
 };

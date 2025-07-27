@@ -20,14 +20,14 @@ const process = async (req, res) => {
   const embeddingsData = [];
   for (const chunk of chunks) {
     const embedding = await embeddingChunks(chunk);
-    embeddingsData.push(embedding);
+    embeddingsData.push({ chunk, embedding });
   }
 
   console.log(
     "embedding -----",
     embeddingsData.length,
     "\n",
-    embeddingsData[0]
+    embeddingsData[0].length
   );
 
   res.json("");
