@@ -137,6 +137,14 @@ export const UploadPanel = ({
       `${process.env.NEXT_PUBLIC_API_URL}/prepare`,
       doc
     );
+
+    const updatedStatus = res.data.status;
+    setDocuments((prevDocs) =>
+      prevDocs.map((prevDoc) =>
+        doc.id === prevDoc.id ? { ...prevDoc, status: updatedStatus } : prevDoc
+      )
+    );
+    console.log(res);
   };
   return (
     <div className="w-80 bg-gray-50 border-l border-gray-200 flex flex-col">

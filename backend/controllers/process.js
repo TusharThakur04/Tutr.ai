@@ -17,6 +17,7 @@ const process = async (req, res) => {
 
   const chunks = await splitting(cleanText); // chunking of cleanText
 
+  // embedding generation
   const embeddingsData = [];
   for (const chunk of chunks) {
     const embedding = await embeddingChunks(chunk);
@@ -36,7 +37,12 @@ const process = async (req, res) => {
   }
   console.log("embeddings added to vector db");
 
-  res.json("");
+  const updatedStatus = await prisma.documents.update({
+    data: { status: "ready" },
+    where: { key },
+  });
+
+  res.json({ status: updatedStatus.status });
 };
 
 export default process;
