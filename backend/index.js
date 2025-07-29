@@ -7,6 +7,7 @@ import upload from "./routes/upload.js";
 import getDoc from "./routes/getDoc.js";
 import metaData from "./routes/metaData.js";
 import prepare from "./routes/prepare.js";
+import chat from "./routes/chat.js";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
@@ -23,6 +24,7 @@ app.use("/upload", upload);
 app.use("/getDoc", getDoc);
 app.use("/metadata", metaData);
 app.use("/prepare", prepare);
+app.use("/chat", chat);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

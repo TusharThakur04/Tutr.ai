@@ -1,6 +1,7 @@
 "use client";
 import { Button } from "@/components/common/button";
 import { Textarea } from "@/components/common/textarea";
+import axios from "axios";
 import { Send } from "lucide-react";
 import { useState } from "react";
 
@@ -16,20 +17,36 @@ export const ChatPanel = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([ChatMessage]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!message.trim()) return;
 
-    // Frontend logic: Add user message to chat
-    // Backend integration needed: Send message to AI service
+    const userMessage = message;
+
+    setMessage("");
+
     const newMessage = {
-      id: Date.now().toString(),
-      content: message,
+      content: userMessage,
       isUser: true,
       timestamp: new Date(),
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    setMessage("");
+
+    // Backend call to process the message
+    const sendMessage = await axios.post(
+      `${process.env.NEXT_PUBLIC_API_URL}/chat`,
+      {
+        message: userMessage,
+      }
+    );
+    setMessages((prev) => [
+      ...prev,
+      {
+        content: sendMessage.data.response,
+        isUser: false,
+        timestamp: new Date(),
+      },
+    ]);
   };
 
   const handleKeyPress = (e) => {
@@ -51,9 +68,9 @@ export const ChatPanel = () => {
 
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((msg) => (
+        {messages.map((msg, index) => (
           <div
-            key={msg.id}
+            key={index}
             className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
           >
             <div
