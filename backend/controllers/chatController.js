@@ -10,6 +10,8 @@ const chatController = async (req, res) => {
     const vectorString = JSON.stringify(embedding);
 
     console.log("retriving context");
+
+    // querying the database for similar chunks
     const result = await pgPool.query(
       `SELECT *, embedding <=> $1 AS similarity
      FROM chunks

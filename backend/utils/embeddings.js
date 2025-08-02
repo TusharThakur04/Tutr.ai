@@ -1,6 +1,4 @@
-import { InferenceClient } from "@huggingface/inference";
-
-const hf = new InferenceClient(process.env.HUGGING_FACE_ACCESS_TOKEN);
+import hf from "../lib/huggingFaceClient.js";
 
 const embeddingChunks = async (chunk) => {
   const embeddingData = await hf.featureExtraction({
