@@ -1,4 +1,5 @@
 import { pgPool } from "../lib/pool.js";
+import answerGeneration from "../utils/answerGeneration.js";
 import embeddingChunks from "../utils/embeddings.js";
 
 const chatController = async (req, res) => {
@@ -24,6 +25,8 @@ const chatController = async (req, res) => {
     console.log("context:", context);
 
     console.log(message, embedding);
+
+    const answer = await answerGeneration(message, context);
   } catch (err) {
     console.error("Error in chatController:", err);
     res.status(500).json({ error: "Internal server error" });
