@@ -39,10 +39,11 @@ export const ChatPanel = () => {
         message: userMessage,
       }
     );
+    console.log("Response from backend:", sendMessage.data.answer);
     setMessages((prev) => [
       ...prev,
       {
-        content: sendMessage.data.response,
+        content: sendMessage.data.answer,
         isUser: false,
         timestamp: new Date(),
       },

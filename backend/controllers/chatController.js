@@ -32,9 +32,11 @@ const chatController = async (req, res) => {
     if (topScore >= 0.5) {
       const context = similarChunks.map((chunk) => chunk.content).join("\n\n");
       const answer = await answerGeneration(message, context);
+      res.status(200).json({ answer, context });
     } else {
       const context = null;
       const answer = await answerGeneration(message, context);
+      res.status(200).json({ answer, context });
     }
   } catch (err) {
     console.error("Error in chatController:", err);
