@@ -20,13 +20,22 @@ const chatController = async (req, res) => {
      LIMIT 5`,
       [vectorString]
     );
-    const similarChunks = result.rows;
-    const context = similarChunks.map((chunk) => chunk.content).join("\n\n");
-    console.log("context:", context);
 
-    console.log(message, embedding);
+    const similarChunks = result.rows.map((row) => ({
+      ...row,
+      similarityScore: 1 - parseFloat(row.similarity),
+    }));
 
-    const answer = await answerGeneration(message, context);
+    const topScore = similarChunks[0].similarityScore;
+    console.log("Top similarity score:", topScore);
+
+    if (topScore >= 0.5) {
+      const context = similarChunks.map((chunk) => chunk.content).join("\n\n");
+      const answer = await answerGeneration(message, context);
+    } else {
+      const context = null;
+      const answer = await answerGeneration(message, context);
+    }
   } catch (err) {
     console.error("Error in chatController:", err);
     res.status(500).json({ error: "Internal server error" });
