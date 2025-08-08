@@ -40,7 +40,7 @@ export async function answerGeneration(query, context) {
     }
   } else {
     try {
-      const SYSTEM_PROMPT = `You're a smart and friendly AI tutor. Help the user understand or figure out answers to their questions. If something is outside your scope (like live weather, real-time data, or personal opinions), let them know politely.`;
+      const SYSTEM_PROMPT = `You're a smart and friendly AI tutor. Help the user understand or figure out answers to their questions. You will be answering all question out of the context that user has provided so at the start of answer do notify them that its not based on the context you provided and then answer it. If something is outside your scope (like live weather, real-time data, or personal opinions), let them know politely.`;
 
       const response = await client.path("/chat/completions").post({
         body: {
