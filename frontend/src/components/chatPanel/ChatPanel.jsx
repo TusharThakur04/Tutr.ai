@@ -4,11 +4,10 @@ import { Textarea } from "@/components/common/textarea";
 import axios from "axios";
 import { Send } from "lucide-react";
 import { useState } from "react";
-
+import Markdown from "react-markdown";
 const ChatMessage = {
   id: "1",
-  content:
-    "Hello! I'm your AI tutor. Upload your notes and ask me any questions about your study materials.",
+  content: `Hello! Im your AI tutor. Upload your notes and ask me any questions about your study materials.`,
   isUser: false,
   timestamp: new Date(),
 };
@@ -30,7 +29,7 @@ export const ChatPanel = () => {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, newMessage]);
+    // setMessages((prev) => [...prev, newMessage]);
 
     // Backend call to process the message
     const sendMessage = await axios.post(
@@ -40,6 +39,9 @@ export const ChatPanel = () => {
       }
     );
     console.log("Response from backend:", sendMessage.data.answer);
+    console.log("Raw answer:", typeof sendMessage.data.answer);
+    const rawAnswer = sendMessage.data.answer;
+
     setMessages((prev) => [
       ...prev,
       {
@@ -70,18 +72,16 @@ export const ChatPanel = () => {
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`flex ${msg.isUser ? "justify-end" : "justify-start"}`}
-          >
+          <div key={index} className={`flex justify-center `}>
             <div
-              className={`max-w-[70%] rounded-2xl px-4 py-3 ${
+              className={`min-w-[60%] max-w-[100%] rounded-2xl px-4 py-3 ${
                 msg.isUser
                   ? "bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
                   : "bg-gray-200 text-gray-800"
               }`}
             >
-              <p className="text-sm">{msg.content}</p>
+              <Markdown>{msg.content}</Markdown>
+
               {/* <span className="text-xs opacity-70 mt-1 block">
                 {msg.timestamp.toLocaleTimeString()}
               </span> */}
