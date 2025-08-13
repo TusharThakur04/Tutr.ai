@@ -218,11 +218,11 @@ export const UploadPanel = ({
                     <div className="flex items-center space-x-2 mt-1">
                       <button
                         onClick={() => handleSendTOAi(doc)}
-                        className={`text-xs px-2 py-1 rounded-full hover:scale-95 hover:bg-red-200 cursor-pointer duration-200 ${
+                        className={`text-xs px-2 py-1 rounded-full hover:scale-95  cursor-pointer duration-200 ${
                           doc.status === "unready"
-                            ? "bg-red-100 text-red-700"
+                            ? "bg-red-100 hover:bg-red-300 text-red-700"
                             : doc.status === "ready"
-                              ? "bg-green-100 text-green-700"
+                              ? "bg-green-100 text-green-700 hover:bg-green-300"
                               : "bg-gray-100 text-gray-700"
                         }`}
                       >
