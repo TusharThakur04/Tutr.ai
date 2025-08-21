@@ -27,7 +27,10 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
               </SignedIn>
               <SignedOut>
                 <Button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setLoggingState(true);
+                    setOpen(false);
+                  }}
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700"
                 >
                   Get Started Free
@@ -116,7 +119,7 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
                   </button>
                 </>
               )}
-              <div className="relative bottom-57 left-18">
+              <div className="relative bottom-55 left-18">
                 <X
                   onClick={() => setOpen(false)}
                   className="h-6 w-6 text-gray-600 cursor-pointer"

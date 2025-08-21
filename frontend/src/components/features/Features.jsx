@@ -1,11 +1,4 @@
-import {
-  FileText,
-  MessageSquare,
-  Search,
-  Shield,
-  Upload,
-  Zap,
-} from "lucide-react";
+import { MessageSquare, Shield, Upload, Zap } from "lucide-react";
 import { Card, CardContent } from "../common/card";
 
 const Features = () => {
@@ -21,7 +14,7 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 gap-8">
           <Card className="p-6 hover:shadow-lg transition-shadow border-purple-100">
             <CardContent className="p-0">
               <Upload className="h-12 w-12 text-purple-600 mb-4" />
@@ -42,32 +35,12 @@ const Features = () => {
             </CardContent>
           </Card>
 
-          <Card className="p-6 hover:shadow-lg transition-shadow border-green-100">
-            <CardContent className="p-0">
-              <FileText className="h-12 w-12 text-green-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Shows Sources</h3>
-              <p className="text-gray-600">
-                Know exactly where each answer came from in your notes.
-              </p>
-            </CardContent>
-          </Card>
-
           <Card className="p-6 hover:shadow-lg transition-shadow border-yellow-100">
             <CardContent className="p-0">
               <MessageSquare className="h-12 w-12 text-yellow-600 mb-4" />
               <h3 className="text-xl font-semibold mb-2">Chat UI</h3>
               <p className="text-gray-600">
                 Ask questions like you would on ChatGPT. Natural conversation.
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="p-6 hover:shadow-lg transition-shadow border-red-100">
-            <CardContent className="p-0">
-              <Search className="h-12 w-12 text-red-600 mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Topic Organization</h3>
-              <p className="text-gray-600">
-                Group and tag notes by subject, chapter, or topic.
               </p>
             </CardContent>
           </Card>

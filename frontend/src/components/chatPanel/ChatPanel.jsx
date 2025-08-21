@@ -6,6 +6,7 @@ import { Send } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+import ThinkingBubble from "../common/loading";
 
 const ChatMessage = {
   id: "1",
@@ -41,12 +42,13 @@ This summary is based entirely on the context you provided. If you'd like more d
 export const ChatPanel = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([ChatMessage]);
+  const [isThinking, setThinking] = useState(false);
 
   const bottomRef = useRef(null);
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "auto" });
-  }, [messages]);
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, message]);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
@@ -54,6 +56,7 @@ export const ChatPanel = () => {
     const userMessage = message;
 
     setMessage("");
+    setThinking(true);
 
     const newMessage = {
       content: userMessage,
@@ -70,10 +73,8 @@ export const ChatPanel = () => {
         message: userMessage,
       }
     );
-    console.log("Response from backend:", sendMessage.data.answer);
-    console.log("Raw answer:", typeof sendMessage.data.answer);
-    const rawAnswer = sendMessage.data.answer;
-
+    // console.log("Response from backend:", sendMessage.data.answer);
+    setThinking(false);
     setMessages((prev) => [
       ...prev,
       {
@@ -103,7 +104,7 @@ export const ChatPanel = () => {
       {/* Messages Container */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, index) => (
-          <div key={index} className="flex justify-start">
+          <div key={index} className="flex flex-col justify-start">
             <div
               className={`min-w-[30%] max-w-[100%] rounded-2xl px-4 py-3 ${
                 msg.isUser
@@ -164,10 +165,11 @@ export const ChatPanel = () => {
               >
                 {msg.content}
               </Markdown>
-              <div ref={bottomRef} />
             </div>
           </div>
         ))}
+        {isThinking && <ThinkingBubble setMessage={setMessage} />}
+        <div ref={bottomRef} />
       </div>
       {/* Input Area */}
       <div className="p-4 border-t border-gray-300 bg-gradient-to-br from-purple-50 to-indigo-50">
