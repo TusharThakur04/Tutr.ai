@@ -3,7 +3,7 @@ import { Button } from "@/components/common/button";
 import { Textarea } from "@/components/common/textarea";
 import axios from "axios";
 import { Send } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Markdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -41,6 +41,12 @@ This summary is based entirely on the context you provided. If you'd like more d
 export const ChatPanel = () => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([ChatMessage]);
+
+  const bottomRef = useRef(null);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages]);
 
   const handleSendMessage = async () => {
     if (!message.trim()) return;
@@ -158,6 +164,7 @@ export const ChatPanel = () => {
               >
                 {msg.content}
               </Markdown>
+              <div ref={bottomRef} />
             </div>
           </div>
         ))}
