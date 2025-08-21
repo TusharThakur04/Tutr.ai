@@ -107,7 +107,10 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
                   </a>
                   <button
                     className=" p-0 w-13 text-gray-600 hover:text-purple-600 cursor-pointer transition-colors"
-                    onClick={(prev) => setUploadingState(!prev)}
+                    onClick={() => {
+                      setUploadingState(true);
+                      setOpen(false);
+                    }}
                   >
                     Upload
                   </button>
