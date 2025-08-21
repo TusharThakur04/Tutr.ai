@@ -18,24 +18,16 @@ const Hero = () => {
               Upload your class notes and ask questions. Get answers grounded in
               what you study.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
+            <div className="flex gap-4 justify-center items-center mb-12">
               <Link href="/study">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-3"
+                  className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-purple-700 hover:to-blue-700 text-lg px-8 py-3"
                 >
                   <Upload className="mr-2 h-5 w-5" />
-                  Upload Notes
+                  Upload & Study
                 </Button>
               </Link>
-
-              <Button
-                size="lg"
-                variant="outline"
-                className="text-lg px-8 py-3 border-purple-200 hover:bg-purple-50"
-              >
-                Try Demo
-              </Button>
             </div>
 
             {/* Hero Illustration */}
