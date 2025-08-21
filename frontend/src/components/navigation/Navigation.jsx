@@ -70,7 +70,7 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
             </div>
 
             <div
-              className={`flex flex-col justify-start items-center gap-10 pl-3 pt-6 fixed top-0 right-0 h-55 w-45 bg-white shadow-lg transform transition-transform duration-300 ease-in-out 
+              className={`flex flex-col justify-start items-center gap-10 pl-3 pt-7 fixed top-0 right-0 h-55 w-45 bg-white shadow-lg transform transition-transform duration-300 ease-in-out 
         ${open ? "translate-x-0" : "translate-x-full"} md:hidden`}
             >
               <SignedIn>
@@ -78,7 +78,10 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
               </SignedIn>
               <SignedOut>
                 <Button
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setLoggingState(true);
+                    setOpen(false);
+                  }}
                   className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 w-33"
                 >
                   Get Started Free
@@ -119,10 +122,10 @@ const Navigation = ({ setLoggingState, setUploadingState }) => {
                   </button>
                 </>
               )}
-              <div className="relative bottom-55 left-18">
+              <div className="relative bottom-57 left-18">
                 <X
                   onClick={() => setOpen(false)}
-                  className="h-6 w-6 text-gray-600 cursor-pointer"
+                  className="h-6 w-6 text-gray-600 cursor-pointer hover:text-purple-600 transition-colors"
                 />
               </div>
             </div>

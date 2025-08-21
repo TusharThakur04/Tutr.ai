@@ -8,6 +8,7 @@ import { useSignIn } from "@clerk/nextjs";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
+import ClientPage from "@/components/clientPage/ClientPage";
 
 const page = () => {
   const [documents, setDocuments] = useState([]);
@@ -41,7 +42,7 @@ const page = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
-      <Navigation setUploadingState={setUploadingState} />
+      <ClientPage uploadingState={uploadingState} />
       <div className=" pt-16 md:flex h-screen">
         <ChatPanel />
 
