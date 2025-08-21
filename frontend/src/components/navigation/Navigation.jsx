@@ -4,7 +4,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
-const Navigation = ({ setLoggingState }) => {
+const Navigation = ({ setLoggingState, setUploadingState }) => {
   const route = usePathname();
   console.log(route);
   const [open, setOpen] = useState(false);
@@ -21,7 +21,6 @@ const Navigation = ({ setLoggingState }) => {
             </span>
           </div>
           <div className="flex items-center justify-between p-4">
-            {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
               <SignedIn>
                 <UserButton />
@@ -60,7 +59,6 @@ const Navigation = ({ setLoggingState }) => {
               )}
             </div>
 
-            {/* Mobile Hamburger */}
             <div className="md:hidden">
               <Menu
                 onClick={() => setOpen(true)}
@@ -68,15 +66,10 @@ const Navigation = ({ setLoggingState }) => {
               />
             </div>
 
-            {/* Mobile Slide-in Menu */}
             <div
-              className={`flex flex-col justify-start gap-10 pl-3 pt-5 fixed top-0 right-0 h-55 w-45 bg-white shadow-lg transform transition-transform duration-300 ease-in-out 
+              className={`flex flex-col justify-start items-center gap-10 pl-3 pt-6 fixed top-0 right-0 h-55 w-45 bg-white shadow-lg transform transition-transform duration-300 ease-in-out 
         ${open ? "translate-x-0" : "translate-x-full"} md:hidden`}
             >
-              {/* Close button */}
-
-              {/* Mobile nav items */}
-
               <SignedIn>
                 <UserButton />
               </SignedIn>
@@ -112,12 +105,15 @@ const Navigation = ({ setLoggingState }) => {
                   >
                     Home
                   </a>
-                  <button className=" p-0 w-13 text-gray-600 hover:text-purple-600 cursor-pointer transition-colors">
+                  <button
+                    className=" p-0 w-13 text-gray-600 hover:text-purple-600 cursor-pointer transition-colors"
+                    onClick={(prev) => setUploadingState(!prev)}
+                  >
                     Upload
                   </button>
                 </>
               )}
-              <div className="relative bottom-55 left-36">
+              <div className="relative bottom-57 left-18">
                 <X
                   onClick={() => setOpen(false)}
                   className="h-6 w-6 text-gray-600 cursor-pointer"
