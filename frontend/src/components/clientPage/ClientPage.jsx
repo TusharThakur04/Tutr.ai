@@ -5,7 +5,7 @@ import Navigation from "../navigation/Navigation";
 import { useUser } from "@clerk/nextjs";
 import storeUser from "@/lib/clerk/storeUser";
 
-export default function ClientPage(uploadingState) {
+export default function ClientPage({ setUploadingState }) {
   const [loggingState, setLoggingState] = useState(false);
   const { isSignedIn, user } = useUser();
 
@@ -17,7 +17,7 @@ export default function ClientPage(uploadingState) {
   return (
     <div className="bg-gradient-to-br from-purple-50 via-white to-blue-50">
       <Navigation
-        uploadingState={uploadingState}
+        setUploadingState={setUploadingState}
         setLoggingState={setLoggingState}
       />
       {loggingState && <Logging setLoggingState={setLoggingState} />}

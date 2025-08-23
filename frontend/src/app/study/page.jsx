@@ -42,13 +42,12 @@ const page = () => {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
-      <ClientPage uploadingState={uploadingState} />
+      <ClientPage setUploadingState={setUploadingState} />
       <div className=" pt-16 md:flex h-screen">
         <ChatPanel />
 
         <div className="hidden md:block">
           <UploadPanel
-            uploadingState={uploadingState}
             setSelectedDoc={setSelectedDoc}
             userId={userId}
             documents={documents}
@@ -61,7 +60,6 @@ const page = () => {
           md:hidden`}
         >
           <UploadPanel
-            uploadingState={uploadingState}
             setSelectedDoc={setSelectedDoc}
             userId={userId}
             documents={documents}
